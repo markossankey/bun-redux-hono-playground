@@ -1,3 +1,5 @@
+import { Button } from "@/components/core/ui/button";
+import { Input } from "@/components/core/ui/input";
 import { todoApi } from "@/lib/redux/services/todo";
 
 export const AddTodo = () => {
@@ -14,14 +16,8 @@ export const AddTodo = () => {
 
   return (
     <form className="flex gap-2" onSubmit={handleSubmit}>
-      <input
-        name="todo"
-        type="text"
-        className="w-full border-b border-slate-200 focus:border-blue-500 outline-none"
-      />
-      <button type="submit" className="border py-1 px-4 rounded-full bg-slate-700 text-white">
-        Add
-      </button>
+      <Input name="todo" type="text" />
+      <Button type="submit">Add</Button>
     </form>
   );
 };

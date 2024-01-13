@@ -1,3 +1,6 @@
+import { Button } from "@/components/core/ui/button";
+import { Card, CardContent } from "@/components/core/ui/card";
+import { Input } from "@/components/core/ui/input";
 import { Todo, todoApi } from "@/lib/redux/services/todo";
 
 export const TodoList = () => {
@@ -37,28 +40,28 @@ const TodoCard = ({ id, text }: Todo) => {
   };
 
   return (
-    <>
-      <li key={id} className="border rounded p-2  my-2">
-        <form className="flex justify-between items-center" onSubmit={onFormSave}>
-          <input
-            name="todo"
-            defaultValue={text}
-            className="focus:border-blue-500 focus:border-b outline-none"
-          />
-          <div className="flex gap-2">
-            <button className="border rounded px-2 bg-green-500 text-white" type="submit">
-              Edit
-            </button>
-            <button
-              type="button"
-              className="border rounded px-2 bg-red-500 text-white"
-              onClick={onDeleteClicked}
-            >
-              Delete
-            </button>
-          </div>
-        </form>
-      </li>
-    </>
+    <Card className="my-2">
+      <CardContent className="p-2">
+        <li key={id}>
+          <form className="flex justify-between items-center gap-4" onSubmit={onFormSave}>
+            <Input name="todo" defaultValue={text} />
+            <div className="flex gap-2">
+              <Button variant="outline" color="" size="sm" type="submit">
+                Edit
+              </Button>
+              <Button
+                variant="destructive-outline"
+                color=""
+                size="sm"
+                type="button"
+                onClick={onDeleteClicked}
+              >
+                Delete
+              </Button>
+            </div>
+          </form>
+        </li>
+      </CardContent>
+    </Card>
   );
 };
