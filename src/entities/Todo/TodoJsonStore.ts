@@ -1,15 +1,29 @@
+import { mkdirSync } from "fs";
 import path from "path";
 import { type Todo, type TodoInterface } from "./interface.type";
 
-const TODO_FILEPATH = path.join(import.meta.dir, "../../../data/todos.json");
+const DATA_DIR = path.join(import.meta.dir, "../../../data");
+const TODO_FILEPATH = `${DATA_DIR}/todos.json`;
 
-export default {
-  getTodos: async () => {
+export default class TodoJsonStore implements TodoInterface {
+  async init() {
+    // try to read, if does not exist, create one, then return this
+    const file = Bun.file(TODO_FILEPATH);
+    const fileExists = await file.exists();
+    if (fileExists) {
+      return this;
+    }
+    mkdirSync(DATA_DIR);
+    await Bun.write(TODO_FILEPATH, "[]");
+    return this;
+  }
+
+  async getTodos() {
     const file = Bun.file(TODO_FILEPATH);
     const todos = await file.json<Todo[]>();
     return todos.filter((t) => !t.isDeleted);
-  },
-  addTodo: async (data) => {
+  }
+  async addTodo(data: Partial<Todo> & Pick<Todo, "text">): Promise<Todo> {
     const file = Bun.file(TODO_FILEPATH);
     const todos = await file.json<Todo[]>();
     const todo = {
@@ -23,8 +37,9 @@ export default {
     todos.push(todo);
     await Bun.write(TODO_FILEPATH, JSON.stringify(todos));
     return todo;
-  },
-  updateTodo: async (data) => {
+  }
+
+  async updateTodo(data: Partial<Todo> & Pick<Todo, "id">): Promise<Todo> {
     const file = Bun.file(TODO_FILEPATH);
     const todos = await file.json<Todo[]>();
     const todo = todos.find((t) => t.id === data.id);
@@ -36,8 +51,9 @@ export default {
     todo.updatedAt = new Date();
     await Bun.write(TODO_FILEPATH, JSON.stringify(todos));
     return todo;
-  },
-  deleteTodo: async (id) => {
+  }
+
+  async deleteTodo(id: string | number): Promise<Todo> {
     const file = Bun.file(TODO_FILEPATH);
     const todos = await file.json<Todo[]>();
     const todo = todos.find((t) => t.id === id);
@@ -48,5 +64,5 @@ export default {
     todo.updatedAt = new Date();
     await Bun.write(TODO_FILEPATH, JSON.stringify(todos));
     return todo;
-  },
-} satisfies TodoInterface;
+  }
+}
