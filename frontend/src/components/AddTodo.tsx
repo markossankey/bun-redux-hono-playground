@@ -1,4 +1,4 @@
-import { todoApi } from "../lib/redux/services/todo";
+import { todoApi } from "@/lib/redux/services/todo";
 
 export const AddTodo = () => {
   const [addTodo] = todoApi.useAddMutation();

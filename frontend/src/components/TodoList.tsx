@@ -1,4 +1,4 @@
-import { Todo, todoApi } from "../lib/redux/services/todo";
+import { Todo, todoApi } from "@/lib/redux/services/todo";
 
 export const TodoList = () => {
   const { isLoading, isError, isSuccess, data: todos } = todoApi.useAllQuery();

@@ -1,7 +1,7 @@
+import { AddTodo } from "@/components/AddTodo";
+import { TodoList } from "@/components/TodoList";
+import { store } from "@/lib/redux/store";
 import { Provider } from "react-redux";
-import { AddTodo } from "./components/AddTodo";
-import { TodoList } from "./components/TodoList";
-import { store } from "./lib/redux/store";
 
 function App() {
   return (
