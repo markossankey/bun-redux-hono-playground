@@ -1,5 +1,6 @@
 import { AddTodo } from "@/components/AddTodo";
 import { TodoList } from "@/components/TodoList";
+import { Toaster } from "@/components/core/ui/toaster";
 import { store } from "@/lib/redux/store";
 import { Provider } from "react-redux";
 
@@ -10,6 +11,7 @@ function App() {
         <AddTodo />
         <TodoList />
       </main>
+      <Toaster />
     </Provider>
   );
 }

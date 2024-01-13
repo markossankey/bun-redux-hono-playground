@@ -1,6 +1,7 @@
 import { Button } from "@/components/core/ui/button";
 import { Card, CardContent } from "@/components/core/ui/card";
 import { Input } from "@/components/core/ui/input";
+import { useToast } from "@/components/core/ui/use-toast";
 import { Todo, todoApi } from "@/lib/redux/services/todo";
 
 export const TodoList = () => {
@@ -24,19 +25,42 @@ export const TodoList = () => {
 const TodoCard = ({ id, text }: Todo) => {
   const [deleteTodo] = todoApi.useDeleteMutation();
   const [editTodo] = todoApi.useEditMutation();
+  const { toast } = useToast();
 
-  const onFormSave = (e: React.FormEvent<HTMLFormElement>) => {
+  const onFormSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const todo = formData.get("todo") as string;
-    editTodo({
-      id,
-      text: todo,
-    });
+    try {
+      const payload = await editTodo({
+        id,
+        text: todo,
+      }).unwrap();
+      toast({
+        title: "Todo Edited",
+        description: payload.text,
+      });
+    } catch (e) {
+      toast({
+        title: "Todo Edit Failed",
+        variant: "destructive",
+      });
+    }
   };
 
-  const onDeleteClicked = () => {
-    deleteTodo(id);
+  const onDeleteClicked = async () => {
+    try {
+      const payload = await deleteTodo(id).unwrap();
+      toast({
+        title: "Todo Deleted",
+        description: payload.text,
+      });
+    } catch (e) {
+      toast({
+        title: "Todo Delete Failed",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

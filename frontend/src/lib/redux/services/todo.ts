@@ -10,14 +10,14 @@ export const todoApi = createApi({
       query: () => "",
     }),
     delete: builder.mutation<Todo, Todo["id"]>({
-      invalidatesTags: ["Todo"],
+      invalidatesTags: (_result, err) => (err ? [] : ["Todo"]),
       query: (id) => ({
         url: `/${id}`,
         method: "DELETE",
       }),
     }),
     add: builder.mutation<Todo, { text: string }>({
-      invalidatesTags: ["Todo"],
+      invalidatesTags: (_result, err) => (err ? [] : ["Todo"]),
       query: (body) => ({
         url: "",
         method: "POST",
@@ -25,7 +25,7 @@ export const todoApi = createApi({
       }),
     }),
     edit: builder.mutation<Todo, { id: Todo["id"]; text: string }>({
-      invalidatesTags: ["Todo"],
+      invalidatesTags: (_result, err) => (err ? [] : ["Todo"]),
       query: ({ id, text }) => ({
         url: `/${id}`,
         method: "PATCH",
